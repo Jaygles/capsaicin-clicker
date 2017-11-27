@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { clickOnce, incrementCapsaicin, checkSpecies, checkHelpers, hireGardner, buyGreenhouse, buyFarm, buyAquaponics, buyAeroponics, buyBiodome, checkProgress, setLocalStorage, getLocalStorage, checkUpgradeStatus, purchaseUpgrade, resetGame } from '../actions/index';
+import { clickOnce, incrementCapsaicin, checkSpecies, checkHelpers, checkEvent, hireGardner, buyGreenhouse, buyFarm, buyAquaponics, buyAeroponics, buyBiodome, checkProgress, setLocalStorage, getLocalStorage, checkUpgradeStatus, purchaseUpgrade, resetGame } from '../actions/index';
 import { bindActionCreators } from 'redux';
 
 class MainGame extends Component {
@@ -14,6 +14,7 @@ class MainGame extends Component {
 
   tick() {
     this.setState({timer: this.state.timer + 1});
+    this.props.checkEvent.checkEvent(this.state.timer, this.props.game);
     this.props.incrementCapsaicin.incrementCapsaicin(this.props.game);
     this.props.checkSpecies.checkSpecies(this.props.game);
     this.props.checkProgress.checkProgress(this.props.game);
@@ -112,10 +113,32 @@ class MainGame extends Component {
               return (null)
             } else {
               return (
-                <div key={game.helpers.purchasedHelpers[value]}>{Object.keys(game.helpers.purchasedHelpers)[index]}: {value}</div>
+                <div key={Object.keys(game.helpers.purchasedHelpers)[index]}>{Object.keys(game.helpers.purchasedHelpers)[index]}: {value}</div>
               )
             }
           })}
+        </div>
+      </div>
+    )
+  }
+
+
+  renderEventPanel(game) {
+    return (
+      <div className="column medium-6 small-12">
+        <h3>Event Panel</h3>
+        <div className="card" style={{height: 300}}>
+          <div className="event-box grid-y align-right" style={{height: 300}}>
+            {game.event.map((event, index, events) => {
+              if(index > events.length - 13) {
+                return (
+                  <span key={index}>{event}</span>
+                )
+              } else {
+                return null;
+              }
+            })}
+          </div>
         </div>
       </div>
     )
@@ -137,7 +160,8 @@ class MainGame extends Component {
 
   renderChat() {
     return (
-      <div className="column medium-6">
+      <div className="column medium-6 small-12">
+        <h3>Pepper Chat</h3>
         <div className="card">
           <div className="messages medium-cell-block-y" style={{height: 300}}></div>
           <form>
@@ -161,6 +185,7 @@ class MainGame extends Component {
         {this.renderHelperTotals(this.props.game)}
         {this.renderUpgrades(this.props.upgrades)}
         {this.renderChat()}
+        {this.renderEventPanel(this.props.game)}
         <div className="grid-y" style={{height: 500}}>
           <div className="column medium-6">
             <button className="button" type="button" onClick={() => this.props.resetGame.resetGame(this.props.game)}>Reset</button>
@@ -182,6 +207,7 @@ function mapStateToProps(state) {
     helpers: state.game.helpers,
     progress: state.game.progress,
     upgrades: state.game.upgrades,
+    event: state.game.event,
     game: state.game,
   }
 }
@@ -191,6 +217,7 @@ function mapDispatchToProps(dispatch) {
     clickOnce: bindActionCreators({clickOnce, incrementCapsaicin}, dispatch),
     incrementCapsaicin: bindActionCreators({incrementCapsaicin}, dispatch),
     checkSpecies: bindActionCreators({checkSpecies}, dispatch),
+    checkEvent: bindActionCreators({checkEvent}, dispatch),
     hireGardner: bindActionCreators({hireGardner}, dispatch),
     buyGreenhouse: bindActionCreators({buyGreenhouse}, dispatch),
     buyFarm: bindActionCreators({buyFarm}, dispatch),

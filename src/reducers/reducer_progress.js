@@ -3,13 +3,17 @@ export default function(state, action) {
   const plantsProgress = [
     { plants: 100, beforeProgress: 0, afterProgress: 1},
     { plants: 1000, beforeProgress: 1, afterProgress: 2},
+    { plants: 2000, beforeProgress: 2, afterProgress: 3},
+    { plants: 4000, beforeProgress: 3, afterProgress: 4},
+    { plants: 8000, beforeProgress: 4, afterProgress: 5},
+    { plants: 20000, beforeProgress: 5, afterProgress: 6},
   ];
 
   switch(action.type) {
     case 'PROGRESS':
       for (let i = 0; i < plantsProgress.length; i += 1) {
-        if (action.payload.plants > plantsProgress.plants && action.payload.progress <= plantsProgress.beforeProgress) {
-          action.payload.progress = plantsProgress.afterProgress
+        if (action.payload.plants > plantsProgress[i].plants && action.payload.progress <= plantsProgress[i].beforeProgress) {
+          action.payload.progress = plantsProgress[i].afterProgress;
         }
       }
       return action.payload;
@@ -19,7 +23,7 @@ export default function(state, action) {
           progress: 0
         }
       } else {
-        return state
+        return state = null
       }
 
   }

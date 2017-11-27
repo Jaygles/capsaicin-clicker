@@ -21,6 +21,7 @@ export default function(state, action) {
       eligibleUpgrades: [],
       purchasedUpgrades: [],
     },
+    event: [],
   };
 
   switch(action.type) {
@@ -106,7 +107,7 @@ export default function(state, action) {
         //   }
         // }
         // done = done.join('');
-        if((JSON.parse(localStorage.payload).helpers.purchasedHelpers.biodomes) !== undefined) {
+        if((JSON.parse(localStorage.payload).helpers.event) !== undefined) {
           return(JSON.parse(localStorage.payload));
         } else {
           return blankGame
@@ -165,25 +166,25 @@ export default function(state, action) {
         + (action.payload.helpers.purchasedHelpers.aeroponics * aeroponicsMultiplier)
         + (action.payload.helpers.purchasedHelpers.biodomes * biodomesMultiplier);
 
-      //Progress logic
-      if (action.payload.plants >= 100 && action.payload.progress < 1) {
-        action.payload.progress = 1;
-      }
-      if (action.payload.plants >= 1000 && action.payload.progress < 2) {
-        action.payload.progress = 2;
-      }
-      if (action.payload.plants >= 2000 && action.payload.progress < 3) {
-        action.payload.progress = 3;
-      }
-      if (action.payload.capsaicin >= 4000 && action.payload.progress < 4) {
-        action.payload.progress = 4;
-      }
-      if (action.payload.capsaicin >= 8000 && action.payload.progress < 5) {
-        action.payload.progress = 5;
-      }
-      if (action.payload.capsaicin >= 20000 && action.payload.progress < 6) {
-        action.payload.progress = 6;
-      }
+      // //Progress logic
+      // if (action.payload.plants >= 100 && action.payload.progress < 1) {
+      //   action.payload.progress = 1;
+      // }
+      // if (action.payload.plants >= 1000 && action.payload.progress < 2) {
+      //   action.payload.progress = 2;
+      // }
+      // if (action.payload.plants >= 2000 && action.payload.progress < 3) {
+      //   action.payload.progress = 3;
+      // }
+      // if (action.payload.capsaicin >= 4000 && action.payload.progress < 4) {
+      //   action.payload.progress = 4;
+      // }
+      // if (action.payload.capsaicin >= 8000 && action.payload.progress < 5) {
+      //   action.payload.progress = 5;
+      // }
+      // if (action.payload.capsaicin >= 20000 && action.payload.progress < 6) {
+      //   action.payload.progress = 6;
+      // }
       return action.payload;
     case 'SPECIES': {
       return state
@@ -209,8 +210,11 @@ export default function(state, action) {
     case 'CHECK_HELPERS': {
       return state
     }
-    case 'CHECK_PROGRESS': {
-      return state;
+    case 'PROGRESS': {
+      return state
+    }
+    case 'CHECK_EVENT': {
+      return state
     }
     case 'SET_LOCAL_STORAGE': {
       // let save = JSON.stringify(action.payload);

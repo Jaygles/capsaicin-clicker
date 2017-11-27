@@ -4,6 +4,7 @@ import Species from './reducer_species';
 import Progress from './reducer_progress';
 import Upgrades from './reducer_upgrades';
 import Helpers from './reducer_helpers';
+import Events from './reducer_events';
 
 const rootReducer = combineReducers({
   game: Game,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   progress: Progress,
   upgrades: Upgrades,
   helpers: Helpers,
+  events: Events,
 });
 
 export default rootReducer;

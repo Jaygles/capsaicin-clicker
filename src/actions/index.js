@@ -12,6 +12,44 @@ export function incrementCapsaicin(capsaicin) {
   }
 }
 
+export function checkEvent(timer, game) {
+  let eventNumbers = {
+    timerTwo: 0,
+    timerFour: 0,
+    timerTen: 0,
+    timerFifty: 0,
+    timerHundred: 0,
+  };
+
+  if (timer % 2 === 0){
+    eventNumbers.timerTwo = Math.random() * 10000;
+  }
+
+  if (timer % 4 === 0){
+    eventNumbers.timerFour = Math.random() * 10000;
+  }
+
+  if (timer % 10 === 0){
+    eventNumbers.timerTen = Math.random() * 10000;
+  }
+
+  if (timer % 50 === 0){
+    eventNumbers.timerFifty = Math.random() * 10000;
+  }
+
+  if (timer % 100 === 0){
+    eventNumbers.timerHundred = Math.random() * 10000;
+  }
+
+  return {
+    type: 'CHECK_EVENT',
+    payload: {
+      game: game,
+      eventNumbers: eventNumbers,
+    },
+  }
+}
+
 export function checkSpecies(capsaicin) {
   return {
     type: 'SPECIES',
@@ -70,7 +108,7 @@ export function buyBiodome(game) {
 
 export function checkProgress(progress) {
   return {
-    type: 'CHECK_PROGRESS',
+    type: 'PROGRESS',
     payload: progress,
   }
 }
