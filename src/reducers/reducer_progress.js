@@ -1,12 +1,13 @@
 export default function(state, action) {
 
+  //TODO Add logic to handle more than just plants as a requirement for progress
   const plantsProgress = [
     { plants: 100, beforeProgress: 0, afterProgress: 1},
     { plants: 1000, beforeProgress: 1, afterProgress: 2},
     { plants: 2000, beforeProgress: 2, afterProgress: 3},
-    { plants: 4000, beforeProgress: 3, afterProgress: 4},
-    { plants: 8000, beforeProgress: 4, afterProgress: 5},
-    { plants: 20000, beforeProgress: 5, afterProgress: 6},
+    { plants: 10000, beforeProgress: 3, afterProgress: 4},
+    { plants: 1000000, beforeProgress: 4, afterProgress: 5},
+    { plants: 5000000, beforeProgress: 5, afterProgress: 6},
   ];
 
   switch(action.type) {

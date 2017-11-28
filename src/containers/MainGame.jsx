@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+//TODO Find out how to import actions as one object
 import { clickOnce, incrementCapsaicin, checkSpecies, checkHelpers, checkEvent, hireGardner, buyGreenhouse, buyFarm, buyAquaponics, buyAeroponics, buyBiodome, checkProgress, setLocalStorage, getLocalStorage, checkUpgradeStatus, purchaseUpgrade, resetGame } from '../actions/index';
 import { bindActionCreators } from 'redux';
 
@@ -15,7 +16,7 @@ class MainGame extends Component {
   tick() {
     this.setState({timer: this.state.timer + 1});
     this.props.checkEvent.checkEvent(this.state.timer, this.props.game);
-    this.props.incrementCapsaicin.incrementCapsaicin(this.props.game);
+    this.props.incrementCapsaicin.incrementCapsaicin(this.props.game, this.state.timer);
     this.props.checkSpecies.checkSpecies(this.props.game);
     this.props.checkProgress.checkProgress(this.props.game);
     this.props.setLocalStorage.setLocalStorage(this.props.game);
@@ -25,7 +26,7 @@ class MainGame extends Component {
 
   componentDidMount() {
     this.props.getLocalStorage.getLocalStorage();
-    this.interval = setInterval(this.tick.bind(this), 250)
+    this.interval = setInterval(this.tick.bind(this), 250);
   }
 
   componentWillUnmount() {
@@ -62,22 +63,22 @@ class MainGame extends Component {
 
   purchaseHelper(game, helper) {
     switch(helper) {
-      case 'gardner':
+      case 'Gardner':
         this.props.hireGardner.hireGardner(game);
         break;
-      case 'greenhouse':
+      case 'Greenhouse':
         this.props.buyGreenhouse.buyGreenhouse(game);
         break;
-      case 'farm':
+      case 'Farm':
         this.props.buyFarm.buyFarm(game);
         break;
-      case 'aquaponics':
+      case 'Aquaponics':
         this.props.buyAquaponics.buyAquaponics(game);
         break;
-      case 'aeroponics':
+      case 'Aeroponics':
         this.props.buyAeroponics.buyAeroponics(game);
         break;
-      case 'biodome':
+      case 'Biodome':
         this.props.buyBiodome.buyBiodome(game);
         break;
       default:
@@ -96,8 +97,8 @@ class MainGame extends Component {
                 <p>Buy {helper.helper}</p>
                 <button className="button" type="button" onClick={() => this.purchaseHelper(game, helper.helper)}>{helper.text}</button>
               </div>
-            )
-          })}
+            )})
+          }
         </div>
       </div>
     )
@@ -177,16 +178,23 @@ class MainGame extends Component {
     this.props.clickOnce.clickOnce(game);
   };
 
+  //TODO Make it so the four small panels go in two columns and the chat and events have space on the right side of the page
   render() {
     return (
       <div className="grid-x">
-        {this.renderTotals()}
-        {this.renderHireHelper(this.props.game)}
-        {this.renderHelperTotals(this.props.game)}
-        {this.renderUpgrades(this.props.upgrades)}
-        {this.renderChat()}
-        {this.renderEventPanel(this.props.game)}
-        <div className="grid-y" style={{height: 500}}>
+        <div className="cell medium-3 medium-cell-block-y">
+          {this.renderTotals()}
+          {this.renderHelperTotals(this.props.game)}
+          {this.renderUpgrades(this.props.upgrades)}
+        </div>
+        <div className="cell medium-3 medium-cell-block-y">
+          {this.renderHireHelper(this.props.game)}
+        </div>
+        <div className="cell medium-6 medium-cell-block-y">
+          {this.renderEventPanel(this.props.game)}
+          {this.renderChat()}
+        </div>
+        <div className="grid-y" style={{height: 70}}>
           <div className="column medium-6">
             <button className="button" type="button" onClick={() => this.props.resetGame.resetGame(this.props.game)}>Reset</button>
           </div>
@@ -212,6 +220,7 @@ function mapStateToProps(state) {
   }
 }
 
+//TODO Find out how to refactor this if possible
 function mapDispatchToProps(dispatch) {
   return {
     clickOnce: bindActionCreators({clickOnce, incrementCapsaicin}, dispatch),

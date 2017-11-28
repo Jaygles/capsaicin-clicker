@@ -1,5 +1,7 @@
 export default function(state, action) {
-
+  //TODO Think about a naming convention for constants
+  //TODO Figure out how to handle too large numbers
+  //Master game state
   const blankGame = {
     plants: 10,
     multiplier: 0.000025,
@@ -8,12 +10,12 @@ export default function(state, action) {
     helpers: {
       eligibleHelpers: [],
       purchasedHelpers: {
-        gardners: 0,
-        greenhouses: 0,
-        farms: 0,
-        aquaponics: 0,
-        aeroponics: 0,
-        biodomes: 0,
+        Gardners: 0,
+        Greenhouses: 0,
+        Farms: 0,
+        Aquaponics: 0,
+        Aeroponics: 0,
+        Biodomes: 0,
       },
     },
     progress: 0,
@@ -27,6 +29,7 @@ export default function(state, action) {
   switch(action.type) {
     case 'GET_LOCAL_STORAGE':
       if (localStorage.payload) {
+        //TODO Think about if making this incredibly simple encryption is worth it
         // let save = localStorage.payload.split('');
         // let done = [];
         // for (let i = 0; i < save.length; i += 1) {
@@ -107,8 +110,10 @@ export default function(state, action) {
         //   }
         // }
         // done = done.join('');
-        if((JSON.parse(localStorage.payload).helpers.event) !== undefined) {
-          return(JSON.parse(localStorage.payload));
+        //Check if latest change is in the user's save if not give them a blank game
+        //TODO Make it so their save is modified rather than replaced with a blank game
+        if((JSON.parse(localStorage.payload).helpers.purchasedHelpers.Gardners) !== undefined) {
+          return (JSON.parse(localStorage.payload))
         } else {
           return blankGame
         }
@@ -119,6 +124,19 @@ export default function(state, action) {
       if(action.payload.upgrades.purchasedUpgrades.includes('click_plus_one')) {
         plantGains += 2;
       }
+      if(action.payload.upgrades.purchasedUpgrades.includes('click_plus_ten')) {
+        plantGains += 10;
+      }
+      if(action.payload.upgrades.purchasedUpgrades.includes('double_click_one')) {
+        plantGains *= 2;
+      }
+      if(action.payload.upgrades.purchasedUpgrades.includes('double_click_two')) {
+        plantGains *= 2;
+      }
+      if(action.payload.upgrades.purchasedUpgrades.includes('double_click_three')) {
+        plantGains *= 2;
+      }
+
       action.payload.plants += plantGains;
       return action.payload;
     case 'INTERVAL':
@@ -131,40 +149,63 @@ export default function(state, action) {
       let biodomesMultiplier = 3750;
 
       // Capsaicin increment logic
-      action.payload.capsaicin = action.payload.capsaicin + (action.payload.plants * action.payload.multiplier);
+      action.payload.game.capsaicin = action.payload.game.capsaicin + (action.payload.game.plants * action.payload.game.multiplier);
 
       // Auto-plant creation logic
-      if(action.payload.upgrades.purchasedUpgrades.includes('better_gardners')) {
+      if(action.payload.game.upgrades.purchasedUpgrades.includes('better_gardners')) {
         gardnerMultiplier += 0.0025;
       }
-
-      if(action.payload.upgrades.purchasedUpgrades.includes('better_greenhouses')) {
+      if(action.payload.game.upgrades.purchasedUpgrades.includes('better_greenhouses')) {
         greenhouseMultiplier += .125;
       }
-
-      if(action.payload.upgrades.purchasedUpgrades.includes('better_farms')) {
+      if(action.payload.game.upgrades.purchasedUpgrades.includes('better_farms')) {
         farmsMultiplier += 1.25;
       }
-
-      if(action.payload.upgrades.purchasedUpgrades.includes('better_aquaponics')) {
+      if(action.payload.game.upgrades.purchasedUpgrades.includes('better_aquaponics')) {
         aquaponicsMultiplier += 25;
       }
-
-      if(action.payload.upgrades.purchasedUpgrades.includes('better_aeroponics')) {
+      if(action.payload.game.upgrades.purchasedUpgrades.includes('better_aeroponics')) {
         aeroponicsMultiplier += 250;
       }
-
-      if(action.payload.upgrades.purchasedUpgrades.includes('better_biodomes')) {
+      if(action.payload.game.upgrades.purchasedUpgrades.includes('better_biodomes')) {
         biodomesMultiplier += 3750;
       }
 
-      action.payload.plants = action.payload.plants
-        + (action.payload.helpers.purchasedHelpers.gardners * gardnerMultiplier)
-        + (action.payload.helpers.purchasedHelpers.greenhouses * greenhouseMultiplier)
-        + (action.payload.helpers.purchasedHelpers.farms * farmsMultiplier)
-        + (action.payload.helpers.purchasedHelpers.aquaponics * aquaponicsMultiplier)
-        + (action.payload.helpers.purchasedHelpers.aeroponics * aeroponicsMultiplier)
-        + (action.payload.helpers.purchasedHelpers.biodomes * biodomesMultiplier);
+      // Auto helper creation logic
+      if(action.payload.game.upgrades.purchasedUpgrades.includes('hiring_manager')) {
+        if(action.payload.timer % 4 === 0 && action.payload.game.plants >= 20) {
+          action.payload.game.plants -= 20;
+          action.payload.game.helpers.purchasedHelpers.Gardners += 1;
+        }
+      }
+      if(action.payload.game.upgrades.purchasedUpgrades.includes('glass_factory')) {
+        if(action.payload.timer % 4 === 0 && action.payload.game.plants >= 200 && action.payload.game.helpers.purchasedHelpers.Gardners >= 20) {
+          action.payload.game.plants -= 200;
+          action.payload.game.helpers.purchasedHelpers.Gardners -= 20;
+          action.payload.game.helpers.purchasedHelpers.Greenhouses += 1;
+        }
+      }
+      if(action.payload.game.upgrades.purchasedUpgrades.includes('hiring_firm')) {
+        if(action.payload.timer % 2 === 0 && action.payload.game.plants >= 150) {
+          action.payload.game.plants -= 150;
+          action.payload.game.helpers.purchasedHelpers.Gardners += 5;
+        }
+      }
+      if(action.payload.game.upgrades.purchasedUpgrades.includes('corporate_farms')) {
+        if(action.payload.timer % 4 === 0 && action.payload.game.helpers.purchasedHelpers.Greenhouses >= 10 && action.payload.game.plants >= 2000) {
+          action.payload.game.helpers.purchasedHelpers.Greenhouses -= 10;
+          action.payload.game.plants -= 2000;
+          action.payload.game.helpers.purchasedHelpers.Farms += 1;
+        }
+      }
+
+      action.payload.game.plants = action.payload.game.plants
+        + (action.payload.game.helpers.purchasedHelpers.Gardners * gardnerMultiplier)
+        + (action.payload.game.helpers.purchasedHelpers.Greenhouses * greenhouseMultiplier)
+        + (action.payload.game.helpers.purchasedHelpers.Farms * farmsMultiplier)
+        + (action.payload.game.helpers.purchasedHelpers.Aquaponics * aquaponicsMultiplier)
+        + (action.payload.game.helpers.purchasedHelpers.Aeroponics * aeroponicsMultiplier)
+        + (action.payload.game.helpers.purchasedHelpers.Biodomes * biodomesMultiplier);
 
       // //Progress logic
       // if (action.payload.plants >= 100 && action.payload.progress < 1) {
@@ -185,7 +226,7 @@ export default function(state, action) {
       // if (action.payload.capsaicin >= 20000 && action.payload.progress < 6) {
       //   action.payload.progress = 6;
       // }
-      return action.payload;
+      return action.payload.game;
     case 'SPECIES': {
       return state
     }

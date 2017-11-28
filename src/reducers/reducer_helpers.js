@@ -1,11 +1,11 @@
 export default function(state, action) {
   let helpers = [
-    {helper: 'gardner', text: 'Cost 10 plants, generates .01 plant/sec', progress: 1},
-    {helper: 'greenhouse', text: 'Cost 100 plants and 10 gardners, generates .5 plants/sec', progress: 2},
-    {helper: 'farm', text: 'Cost 1000 plants and 5 greenhouses, generates 5 plants/sec', progress: 3},
-    {helper: 'aquaponics', text: 'Cost 10 farms, generates 100 plants/sec', progress: 4},
-    {helper: 'aeroponics', text: 'Cost 1000 capsaicin and 1,000,000 plants, generates 1000 plants/sec', progress: 5},
-    {helper: 'biodome', text: 'Cost 10 aeroponics and 5 aquaponics, generates 15000 plants/sec', progress: 6},
+    {helper: 'Gardner', text: 'Cost 10 plants, generates .01 plant/sec', progress: 1},
+    {helper: 'Greenhouse', text: 'Cost 100 plants and 10 gardners, generates .5 plants/sec', progress: 2},
+    {helper: 'Farm', text: 'Cost 1000 plants and 5 greenhouses, generates 5 plants/sec', progress: 3},
+    {helper: 'Aquaponics', text: 'Cost 100 heat and 10 farms, generates 100 plants/sec', progress: 4},
+    {helper: 'Aeroponics', text: 'Cost 1000 heat and 1,000,000 plants, generates 1000 plants/sec', progress: 5},
+    {helper: 'Biodome', text: 'Cost 10 aeroponics and 5 aquaponics, generates 15000 plants/sec', progress: 6},
   ];
   let eligibleHelpers = [];
 
@@ -13,36 +13,37 @@ export default function(state, action) {
     case 'HIRE_GARDNER': {
       if(action.payload.plants >= 10) {
         action.payload.plants -= 10;
-        action.payload.helpers.purchasedHelpers.gardners += 1;
+        action.payload.helpers.purchasedHelpers.Gardners += 1;
         return action.payload;
       } else {
         return action.payload;
       }
     }
     case 'BUY_GREENHOUSE': {
-      if(action.payload.plants >= 100 && action.payload.helpers.purchasedHelpers.gardners >= 10) {
+      if(action.payload.plants >= 100 && action.payload.helpers.purchasedHelpers.Gardners >= 10) {
         action.payload.plants -= 100;
-        action.payload.helpers.purchasedHelpers.gardners -= 10;
-        action.payload.helpers.purchasedHelpers.greenhouses += 1;
+        action.payload.helpers.purchasedHelpers.Gardners -= 10;
+        action.payload.helpers.purchasedHelpers.Greenhouses += 1;
         return action.payload;
       } else {
         return action.payload;
       }
     }
     case 'BUY_FARM': {
-      if(action.payload.plants >= 1000 && action.payload.helpers.purchasedHelpers.greenhouses >= 5) {
+      if(action.payload.plants >= 1000 && action.payload.helpers.purchasedHelpers.Greenhouses >= 5) {
         action.payload.plants -= 1000;
-        action.payload.helpers.purchasedHelpers.greenhouses -= 5;
-        action.payload.helpers.purchasedHelpers.farms += 1;
+        action.payload.helpers.purchasedHelpers.Greenhouses -= 5;
+        action.payload.helpers.purchasedHelpers.Farms += 1;
         return action.payload;
       } else {
         return action.payload;
       }
     }
     case 'BUY_AQUAPONICS': {
-      if(action.payload.helpers.purchasedHelpers.farms >= 10) {
-        action.payload.helpers.purchasedHelpers.farms -= 10;
-        action.payload.helpers.purchasedHelpers.aquaponics += 1;
+      if(action.payload.helpers.purchasedHelpers.Farms >= 10 && action.payload.capsaicin >= 100) {
+        action.payload.helpers.purchasedHelpers.Farms -= 10;
+        action.payload.capsaicin -= 100;
+        action.payload.helpers.purchasedHelpers.Aquaponics += 1;
         return action.payload;
       } else {
         return action.payload;
@@ -52,17 +53,17 @@ export default function(state, action) {
       if(action.payload.capsaicin >= 1000 && action.payload.plants >= 1000000) {
         action.payload.capsaicin -= 1000;
         action.payload.plants -= 1000000;
-        action.payload.helpers.purchasedHelpers.aeroponics += 1;
+        action.payload.helpers.purchasedHelpers.Aeroponics += 1;
         return action.payload;
       } else {
         return action.payload;
       }
     }
     case 'BUY_BIODOME': {
-      if(action.payload.helpers.purchasedHelpers.aeroponics >= 10 && action.payload.helpers.purchasedHelpers.aquaponics >= 5) {
-        action.payload.helpers.purchasedHelpers.aeroponics -= 10;
-        action.payload.helpers.purchasedHelpers.aquaponics -= 5;
-        action.payload.helpers.purchasedHelpers.biodomes += 1;
+      if(action.payload.helpers.purchasedHelpers.Aeroponics >= 10 && action.payload.helpers.purchasedHelpers.Aquaponics >= 5) {
+        action.payload.helpers.purchasedHelpers.Aeroponics -= 10;
+        action.payload.helpers.purchasedHelpers.Aquaponics -= 5;
+        action.payload.helpers.purchasedHelpers.Biodomes += 1;
         return action.payload;
       } else {
         return action.payload;

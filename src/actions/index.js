@@ -5,10 +5,10 @@ export function clickOnce(plants) {
   };
 }
 
-export function incrementCapsaicin(capsaicin) {
+export function incrementCapsaicin(game, timer) {
   return {
     type: 'INTERVAL',
-    payload: capsaicin,
+    payload: { game, timer }
   }
 }
 
@@ -64,10 +64,10 @@ export function checkHelpers(game) {
   }
 }
 
-export function hireGardner(gardners) {
+export function hireGardner(game) {
   return {
     type: 'HIRE_GARDNER',
-    payload: gardners,
+    payload: game,
   }
 }
 
