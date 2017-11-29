@@ -5,7 +5,8 @@ export default function(state, action) {
     {helper: 'Farm', text: 'Cost 1000 plants and 5 greenhouses, generates 5 plants/sec', progress: 3},
     {helper: 'Aquaponics', text: 'Cost 100 heat and 10 farms, generates 100 plants/sec', progress: 4},
     {helper: 'Aeroponics', text: 'Cost 1000 heat and 1,000,000 plants, generates 1000 plants/sec', progress: 5},
-    {helper: 'Biodome', text: 'Cost 10 aeroponics and 5 aquaponics, generates 15000 plants/sec', progress: 6},
+    {helper: 'Biodome', text: 'Cost 10 aeroponics and 5 aquaponics, generates 15,000 plants/sec', progress: 6},
+    {helper: 'Pepper Forest', text: 'Cost 1000 farms and 50,000 heat, generates 50,000 plants/sec', progress: 7},
   ];
   let eligibleHelpers = [];
 
@@ -60,10 +61,20 @@ export default function(state, action) {
       }
     }
     case 'BUY_BIODOME': {
-      if(action.payload.helpers.purchasedHelpers.Aeroponics >= 10 && action.payload.helpers.purchasedHelpers.Aquaponics >= 5) {
-        action.payload.helpers.purchasedHelpers.Aeroponics -= 10;
-        action.payload.helpers.purchasedHelpers.Aquaponics -= 5;
-        action.payload.helpers.purchasedHelpers.Biodomes += 1;
+    if(action.payload.helpers.purchasedHelpers.Aeroponics >= 10 && action.payload.helpers.purchasedHelpers.Aquaponics >= 5) {
+      action.payload.helpers.purchasedHelpers.Aeroponics -= 10;
+      action.payload.helpers.purchasedHelpers.Aquaponics -= 5;
+      action.payload.helpers.purchasedHelpers.Biodomes += 1;
+      return action.payload;
+    } else {
+      return action.payload;
+    }
+  }
+    case 'BUY_FOREST': {
+      if(action.payload.helpers.purchasedHelpers.Farms >= 1000 && action.payload.capsaicin >= 50000) {
+        action.payload.helpers.purchasedHelpers.Farms -= 1000;
+        action.payload.capsaicin -= 50000;
+        action.payload.helpers.purchasedHelpers.Pepper_Forests += 1;
         return action.payload;
       } else {
         return action.payload;

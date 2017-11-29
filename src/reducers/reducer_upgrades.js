@@ -16,10 +16,17 @@ export default function(state, action) {
     {upgrade: 'hiring_firm', text: '3000 Heat - This hiring firm will hire ten gardeners per second but at triple cost', capsaicinCheck: 3000, purchased: false},
     {upgrade: 'corporate_farms', text: '5000 Heat - Incorporate your farm empire, will create one farm per second at double cost.', capsaicinCheck: 5000, purchased: false},
     {upgrade: 'double_click_four', text:'7500 Heat - Double plants per click', capsaicinCheck: 7500, purchased: false},
-    {upgrade: 'double_click_four', text:'25000 Heat - Double plants per click', capsaicinCheck: 25000, purchased: false},
-    {upgrade: 'better_aquaponics', text: '100000 Heat - Double effectiveness of aqua0ponics', capsaicinCheck: 10000, purchased: false},
+    {upgrade: 'assembly_line', text:'15000 Heat - Adding assembly lines to your factories increases the efficiency ten fold', capsaicinCheck: 15000, purchased: false},
+    {upgrade: 'double_click_five', text:'25000 Heat - Double plants per click', capsaicinCheck: 25000, purchased: false},
+    {upgrade: 'mass_recruiting', text: '50000 Heat - A global recruitment push brings one hundred gardeners to your employment per second but at quadruple cost', capsaicinCheck: 50000, purchased: false},
+    {upgrade: 'better_aquaponics', text: '100000 Heat - Double effectiveness of aquaponics', capsaicinCheck: 100000, purchased: false},
+    {upgrade: 'double_click_six', text:'250000 Heat - Double plants per click', capsaicinCheck: 250000, purchased: false},
     {upgrade: 'better_aeroponics', text: '500000 Heat - Double effectiveness of aeroponics', capsaicinCheck: 500000, purchased: false},
+    {upgrade: 'double_click_seven', text:'750000 Heat - Double plants per click', capsaicinCheck: 750000, purchased: false},
     {upgrade: 'better_biodomes', text: '1000000 Heat - Double effectiveness of biodomes', capsaicinCheck: 1000000, purchased: false},
+    {upgrade: 'genetic_modifying', text: '2500000 Heat - You hire scientists to look into modifying your pepper\'s genetic code directly. Your heat grows twice as fast.', capsaicinCheck: 2500000, purchased: false},
+    {upgrade: 'double_click_eight', text:'50000000 Heat - Double plants per click', capsaicinCheck: 50000000, purchased: false},
+    {upgrade: 'better_forests', text: '100000000 Heat - Double effectiveness of pepper forests', capsaicinCheck: 100000000, purchased: false},
   ];
 
   let eligibleUpgrades = [];

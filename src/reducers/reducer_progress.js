@@ -8,6 +8,7 @@ export default function(state, action) {
     { plants: 10000, beforeProgress: 3, afterProgress: 4},
     { plants: 1000000, beforeProgress: 4, afterProgress: 5},
     { plants: 5000000, beforeProgress: 5, afterProgress: 6},
+    { plants: 50000000, beforeProgress: 6, afterProgress: 7},
   ];
 
   switch(action.type) {

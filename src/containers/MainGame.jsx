@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 //TODO Find out how to import actions as one object
-import { clickOnce, incrementCapsaicin, checkSpecies, checkHelpers, checkEvent, hireGardner, buyGreenhouse, buyFarm, buyAquaponics, buyAeroponics, buyBiodome, checkProgress, setLocalStorage, getLocalStorage, checkUpgradeStatus, purchaseUpgrade, resetGame } from '../actions/index';
+import { clickOnce, incrementCapsaicin, checkSpecies, checkHelpers, checkEvent, hireGardner, buyGreenhouse, buyFarm, buyAquaponics, buyAeroponics, buyBiodome, buyForest, checkProgress, setLocalStorage, getLocalStorage, checkUpgradeStatus, purchaseUpgrade, resetGame } from '../actions/index';
 import { bindActionCreators } from 'redux';
 
 class MainGame extends Component {
@@ -81,6 +81,9 @@ class MainGame extends Component {
       case 'Biodome':
         this.props.buyBiodome.buyBiodome(game);
         break;
+      case 'Pepper Forest':
+        this.props.buyForest.buyForest(game);
+        break;
       default:
         console.log('something went wrong at purchasehelper');
     }
@@ -92,6 +95,7 @@ class MainGame extends Component {
         <div className="card">
           <h3>Purchase helpers</h3>
           {game.helpers.eligibleHelpers.map(helper => {
+            helper.helper = helper.helper.split('_').join(' ');
             return (
               <div key={helper.helper}>
                 <p>Buy {helper.helper}</p>
@@ -110,11 +114,12 @@ class MainGame extends Component {
         <div className="card">
           <h3>Employed Helpers</h3>
           {Object.values(game.helpers.purchasedHelpers).map((value, index) => {
+            let name = (Object.keys(game.helpers.purchasedHelpers)[index]).split('_').join(' ');
             if(value === 0) {
               return (null)
             } else {
               return (
-                <div key={Object.keys(game.helpers.purchasedHelpers)[index]}>{Object.keys(game.helpers.purchasedHelpers)[index]}: {value}</div>
+                <div key={Object.keys(game.helpers.purchasedHelpers)[index]}>{name}: {value}</div>
               )
             }
           })}
@@ -178,8 +183,6 @@ class MainGame extends Component {
     this.props.clickOnce.clickOnce(game);
   };
 
-
-  //TODO Make it so the four small panels go in two columns and the chat and events have space on the right side of the page
   render() {
     return (
       <div className="grid-x">
@@ -234,6 +237,7 @@ function mapDispatchToProps(dispatch) {
     buyAquaponics: bindActionCreators({buyAquaponics}, dispatch),
     buyAeroponics: bindActionCreators({buyAeroponics}, dispatch),
     buyBiodome: bindActionCreators({buyBiodome}, dispatch),
+    buyForest: bindActionCreators({buyForest}, dispatch),
     checkProgress: bindActionCreators({checkProgress}, dispatch),
     checkHelpers: bindActionCreators({checkHelpers}, dispatch),
     setLocalStorage: bindActionCreators({setLocalStorage}, dispatch),

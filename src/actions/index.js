@@ -19,6 +19,7 @@ export function checkEvent(timer, game) {
     timerTen: 0,
     timerFifty: 0,
     timerHundred: 0,
+    timerThousand: 0,
   };
 
   if (timer % 2 === 0){
@@ -39,6 +40,10 @@ export function checkEvent(timer, game) {
 
   if (timer % 100 === 0){
     eventNumbers.timerHundred = Math.random() * 10000;
+  }
+
+  if (timer % 1000 === 0){
+    eventNumbers.timerThousand = Math.random() * 10000;
   }
 
   return {
@@ -102,6 +107,13 @@ export function buyAeroponics(game) {
 export function buyBiodome(game) {
   return {
     type: 'BUY_BIODOME',
+    payload: game,
+  }
+}
+
+export function buyForest(game) {
+  return {
+    type: 'BUY_FOREST',
     payload: game,
   }
 }
