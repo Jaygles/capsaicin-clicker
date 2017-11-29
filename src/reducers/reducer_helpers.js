@@ -1,7 +1,7 @@
 export default function(state, action) {
   let helpers = [
-    {helper: 'Gardner', text: 'Cost 10 plants, generates .01 plant/sec', progress: 1},
-    {helper: 'Greenhouse', text: 'Cost 100 plants and 10 gardners, generates .5 plants/sec', progress: 2},
+    {helper: 'Gardener', text: 'Cost 10 plants, generates .01 plant/sec', progress: 1},
+    {helper: 'Greenhouse', text: 'Cost 100 plants and 10 gardeners, generates .5 plants/sec', progress: 2},
     {helper: 'Farm', text: 'Cost 1000 plants and 5 greenhouses, generates 5 plants/sec', progress: 3},
     {helper: 'Aquaponics', text: 'Cost 100 heat and 10 farms, generates 100 plants/sec', progress: 4},
     {helper: 'Aeroponics', text: 'Cost 1000 heat and 1,000,000 plants, generates 1000 plants/sec', progress: 5},
@@ -13,16 +13,16 @@ export default function(state, action) {
     case 'HIRE_GARDNER': {
       if(action.payload.plants >= 10) {
         action.payload.plants -= 10;
-        action.payload.helpers.purchasedHelpers.Gardners += 1;
+        action.payload.helpers.purchasedHelpers.Gardeners += 1;
         return action.payload;
       } else {
         return action.payload;
       }
     }
     case 'BUY_GREENHOUSE': {
-      if(action.payload.plants >= 100 && action.payload.helpers.purchasedHelpers.Gardners >= 10) {
+      if(action.payload.plants >= 100 && action.payload.helpers.purchasedHelpers.Gardeners >= 10) {
         action.payload.plants -= 100;
-        action.payload.helpers.purchasedHelpers.Gardners -= 10;
+        action.payload.helpers.purchasedHelpers.Gardeners -= 10;
         action.payload.helpers.purchasedHelpers.Greenhouses += 1;
         return action.payload;
       } else {

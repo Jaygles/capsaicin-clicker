@@ -10,7 +10,7 @@ export default function(state, action) {
     helpers: {
       eligibleHelpers: [],
       purchasedHelpers: {
-        Gardners: 0,
+        Gardeners: 0,
         Greenhouses: 0,
         Farms: 0,
         Aquaponics: 0,
@@ -112,7 +112,7 @@ export default function(state, action) {
         // done = done.join('');
         //Check if latest change is in the user's save if not give them a blank game
         //TODO Make it so their save is modified rather than replaced with a blank game
-        if((JSON.parse(localStorage.payload).helpers.purchasedHelpers.Gardners) !== undefined) {
+        if((JSON.parse(localStorage.payload).helpers.purchasedHelpers.Gardeners) !== undefined) {
           return (JSON.parse(localStorage.payload))
         } else {
           return blankGame
@@ -120,7 +120,7 @@ export default function(state, action) {
       }
       return state;
     case 'BUTTON_CLICKED':
-      let plantGains = 100;
+      let plantGains = 10;
       if(action.payload.upgrades.purchasedUpgrades.includes('click_plus_one')) {
         plantGains += 2;
       }
@@ -134,6 +134,12 @@ export default function(state, action) {
         plantGains *= 2;
       }
       if(action.payload.upgrades.purchasedUpgrades.includes('double_click_three')) {
+        plantGains *= 2;
+      }
+      if(action.payload.upgrades.purchasedUpgrades.includes('double_click_four')) {
+        plantGains *= 2;
+      }
+      if(action.payload.upgrades.purchasedUpgrades.includes('double_click_five')) {
         plantGains *= 2;
       }
 
@@ -152,7 +158,7 @@ export default function(state, action) {
       action.payload.game.capsaicin = action.payload.game.capsaicin + (action.payload.game.plants * action.payload.game.multiplier);
 
       // Auto-plant creation logic
-      if(action.payload.game.upgrades.purchasedUpgrades.includes('better_gardners')) {
+      if(action.payload.game.upgrades.purchasedUpgrades.includes('better_gardeners')) {
         gardnerMultiplier += 0.0025;
       }
       if(action.payload.game.upgrades.purchasedUpgrades.includes('better_greenhouses')) {
@@ -175,20 +181,20 @@ export default function(state, action) {
       if(action.payload.game.upgrades.purchasedUpgrades.includes('hiring_manager')) {
         if(action.payload.timer % 4 === 0 && action.payload.game.plants >= 20) {
           action.payload.game.plants -= 20;
-          action.payload.game.helpers.purchasedHelpers.Gardners += 1;
+          action.payload.game.helpers.purchasedHelpers.Gardeners += 1;
         }
       }
       if(action.payload.game.upgrades.purchasedUpgrades.includes('glass_factory')) {
-        if(action.payload.timer % 4 === 0 && action.payload.game.plants >= 200 && action.payload.game.helpers.purchasedHelpers.Gardners >= 20) {
+        if(action.payload.timer % 4 === 0 && action.payload.game.plants >= 200 && action.payload.game.helpers.purchasedHelpers.Gardeners >= 20) {
           action.payload.game.plants -= 200;
-          action.payload.game.helpers.purchasedHelpers.Gardners -= 20;
+          action.payload.game.helpers.purchasedHelpers.Gardeners -= 20;
           action.payload.game.helpers.purchasedHelpers.Greenhouses += 1;
         }
       }
       if(action.payload.game.upgrades.purchasedUpgrades.includes('hiring_firm')) {
         if(action.payload.timer % 2 === 0 && action.payload.game.plants >= 150) {
           action.payload.game.plants -= 150;
-          action.payload.game.helpers.purchasedHelpers.Gardners += 5;
+          action.payload.game.helpers.purchasedHelpers.Gardeners += 5;
         }
       }
       if(action.payload.game.upgrades.purchasedUpgrades.includes('corporate_farms')) {
@@ -200,7 +206,7 @@ export default function(state, action) {
       }
 
       action.payload.game.plants = action.payload.game.plants
-        + (action.payload.game.helpers.purchasedHelpers.Gardners * gardnerMultiplier)
+        + (action.payload.game.helpers.purchasedHelpers.Gardeners * gardnerMultiplier)
         + (action.payload.game.helpers.purchasedHelpers.Greenhouses * greenhouseMultiplier)
         + (action.payload.game.helpers.purchasedHelpers.Farms * farmsMultiplier)
         + (action.payload.game.helpers.purchasedHelpers.Aquaponics * aquaponicsMultiplier)

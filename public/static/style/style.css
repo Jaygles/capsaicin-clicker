@@ -1,3 +1,27 @@
+#root {
+
+}
+
+.grid-container {
+    padding: 0;
+}
+
+.medium-3 {
+    width: 90%;
+}
+
+.cell {
+
+}
+
+.card {
+
+}
+
+.card>:last-child button {
+    margin: 0;
+}
+
 #message-box {
     height: 40.47px;
     width: 85%;
@@ -6,8 +30,24 @@
     margin-bottom: 0;
 }
 
+.messages p {
+    margin-bottom: 5px;
+}
+
 .send-button {
     width: 15%;
     margin-bottom: 0;
     float: right;
+}
+
+button.button {
+    background-color: green;
+}
+
+input.send-button {
+    background-color: green;
+}
+
+.button:focus,.button:hover {
+    background-color: #d30001;
 }

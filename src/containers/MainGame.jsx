@@ -63,7 +63,7 @@ class MainGame extends Component {
 
   purchaseHelper(game, helper) {
     switch(helper) {
-      case 'Gardner':
+      case 'Gardener':
         this.props.hireGardner.hireGardner(game);
         break;
       case 'Greenhouse':
@@ -153,7 +153,7 @@ class MainGame extends Component {
           <p>Pepper Plants {this.props.plants.toFixed(2)}</p>
           <p>Heat {this.props.capsaicin.toFixed(3)}</p>
           <p>Species {this.props.species}</p>
-          <button className='button small' type="button" onClick={() => this.onClick(this.props.game)}>Click Me</button>
+          <button className='button' type="button" onClick={() => this.onClick(this.props.game)}>Click Me</button>
         </div>
       </div>
     )
@@ -164,10 +164,10 @@ class MainGame extends Component {
       <div className="column medium-6 small-12">
         <h3>Pepper Chat</h3>
         <div className="card">
-          <div className="messages medium-cell-block-y" style={{height: 300}}></div>
+          <div className="messages grid-y align-right" style={{height: 300}}></div>
           <form>
             <input type="text" id="message-box"/>
-            <input type="submit" className="send-button button" />
+            <input type="submit" className="send-button button" value="Chat" />
           </form>
         </div>
       </div>
@@ -177,6 +177,7 @@ class MainGame extends Component {
   onClick(game) {
     this.props.clickOnce.clickOnce(game);
   };
+
 
   //TODO Make it so the four small panels go in two columns and the chat and events have space on the right side of the page
   render() {
