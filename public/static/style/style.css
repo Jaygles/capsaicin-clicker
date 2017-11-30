@@ -60,3 +60,11 @@ input.send-button {
 .button:focus,.button:hover {
     background-color: #d30001;
 }
+
+button.gold {
+    background-color: goldenrod;
+}
+
+button.gold:focus,.button.gold:hover {
+    background-color: silver;
+}

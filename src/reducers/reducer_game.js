@@ -5,6 +5,8 @@ export default function(state, action) {
   const blankGame = {
     plants: 10,
     capsaicin: 1,
+    plantGains: 0,
+    heatGains: 0,
     species: 'Bell Pepper',
     helpers: {
       eligibleHelpers: [],
@@ -16,6 +18,8 @@ export default function(state, action) {
         Aeroponics: 0,
         Biodomes: 0,
         Pepper_Forests: 0,
+        Pepper_Excavators: 0,
+        Madagascar: 0,
       },
     },
     progress: 0,
@@ -112,11 +116,23 @@ export default function(state, action) {
         // done = done.join('');
         //Check if latest change is in the user's save if not give them a blank game
         //TODO Make it so their save is modified rather than replaced with a blank game
-        if((JSON.parse(localStorage.payload).helpers.purchasedHelpers.Pepper_Forests) !== undefined) {
-          return (JSON.parse(localStorage.payload))
-        } else {
-          return blankGame
+        let game = JSON.parse(localStorage.payload);
+
+        //Ghetto handling of new things to the main state being added
+        if((game.helpers.purchasedHelpers.Pepper_Excavators) === undefined) {
+          game.helpers.purchasedHelpers.Pepper_Excavators = 0;
         }
+        if((game.helpers.purchasedHelpers.Madagascar) === undefined) {
+          game.helpers.purchasedHelpers.Madagascar = 0;
+        }
+        if((game.plantGains) === undefined) {
+          game.plantGains = 0;
+        }
+        if((game.heatGains) === undefined) {
+          game.heatGains = 0;
+        }
+
+        return game;
       }
       return state;
     case 'BUTTON_CLICKED':
@@ -139,17 +155,32 @@ export default function(state, action) {
       if(action.payload.upgrades.purchasedUpgrades.includes('double_click_four')) {
         plantGains *= 2;
       }
+      if(action.payload.upgrades.purchasedUpgrades.includes('click_times_ten')) {
+        plantGains *= 10;
+      }
       if(action.payload.upgrades.purchasedUpgrades.includes('double_click_five')) {
         plantGains *= 2;
       }
       if(action.payload.upgrades.purchasedUpgrades.includes('double_click_six')) {
         plantGains *= 2;
       }
+      if(action.payload.upgrades.purchasedUpgrades.includes('universal_click_times_ten')) {
+        plantGains *= 10;
+      }
       if(action.payload.upgrades.purchasedUpgrades.includes('double_click_seven')) {
         plantGains *= 2;
       }
       if(action.payload.upgrades.purchasedUpgrades.includes('double_click_eight')) {
         plantGains *= 2;
+      }
+      if(action.payload.upgrades.purchasedUpgrades.includes('double_click_nine')) {
+        plantGains *= 2;
+      }
+      if(action.payload.upgrades.purchasedUpgrades.includes('double_click_ten')) {
+        plantGains *= 2;
+      }
+      if(action.payload.upgrades.purchasedUpgrades.includes('click_times_ten_two')) {
+        plantGains *= 10;
       }
 
       action.payload.plants += plantGains;
@@ -163,6 +194,8 @@ export default function(state, action) {
       let aeroponicsMultiplier = 250;
       let biodomesMultiplier = 3750;
       let pepperForestMultiplier = 12500;
+      let excavatorMultiplier = 125000;
+      let madagascarMultiplier = 50000000;
 
       // Capsaicin increment logic
       let capsaicinMultiplier = 0.000025;
@@ -171,7 +204,17 @@ export default function(state, action) {
         capsaicinMultiplier *= 2;
       }
 
+      if(action.payload.game.upgrades.purchasedUpgrades.includes('improved_genetics')) {
+        capsaicinMultiplier *= 2;
+      }
+
+      const beforeHeat = action.payload.game.capsaicin;
+
       action.payload.game.capsaicin = action.payload.game.capsaicin + (action.payload.game.plants * capsaicinMultiplier);
+
+      const afterHeat = action.payload.game.capsaicin;
+
+      action.payload.game.heatGains = (afterHeat - beforeHeat) * 4;
 
       // Auto-plant creation logic
       if(action.payload.game.upgrades.purchasedUpgrades.includes('better_gardeners')) {
@@ -195,6 +238,15 @@ export default function(state, action) {
       if(action.payload.game.upgrades.purchasedUpgrades.includes('better_forests')) {
         pepperForestMultiplier *= 2;
       }
+      if(action.payload.game.upgrades.purchasedUpgrades.includes('better_excavators')) {
+        excavatorMultiplier *= 2;
+      }
+      if(action.payload.game.upgrades.purchasedUpgrades.includes('min_max_madagascar')) {
+        madagascarMultiplier *= 10;
+      }
+      if(action.payload.game.upgrades.purchasedUpgrades.includes('squeeze_madagascar')) {
+        madagascarMultiplier *= 100;
+      }
 
       // Auto helper creation logic
       if(action.payload.game.upgrades.purchasedUpgrades.includes('hiring_manager')) {
@@ -206,8 +258,12 @@ export default function(state, action) {
       if(action.payload.game.upgrades.purchasedUpgrades.includes('glass_factory')) {
         if(action.payload.timer % 4 === 0 && action.payload.game.plants >= 200 && action.payload.game.helpers.purchasedHelpers.Gardeners >= 20) {
           action.payload.game.plants -= 200;
-          action.payload.game.helpers.purchasedHelpers.Gardeners -= 20;
-          if(action.payload.game.upgrades.purchasedUpgrades.includes('assembly_lines')) {
+          if(action.payload.game.upgrades.purchasedUpgrades.includes('automated-greenhouses')) {
+            action.payload.game.helpers.purchasedHelpers.Gardeners -= 10;
+          } else {
+            action.payload.game.helpers.purchasedHelpers.Gardeners -= 20;
+          }
+          if(action.payload.game.upgrades.purchasedUpgrades.includes('assembly_line')) {
             action.payload.game.helpers.purchasedHelpers.Greenhouses += 10;
           } else {
             action.payload.game.helpers.purchasedHelpers.Greenhouses += 1;
@@ -234,6 +290,8 @@ export default function(state, action) {
         }
       }
 
+      const beforePlants = action.payload.game.plants;
+
       action.payload.game.plants = action.payload.game.plants
         + (action.payload.game.helpers.purchasedHelpers.Gardeners * gardnerMultiplier)
         + (action.payload.game.helpers.purchasedHelpers.Greenhouses * greenhouseMultiplier)
@@ -241,7 +299,13 @@ export default function(state, action) {
         + (action.payload.game.helpers.purchasedHelpers.Aquaponics * aquaponicsMultiplier)
         + (action.payload.game.helpers.purchasedHelpers.Aeroponics * aeroponicsMultiplier)
         + (action.payload.game.helpers.purchasedHelpers.Biodomes * biodomesMultiplier)
-        + (action.payload.game.helpers.purchasedHelpers.Pepper_Forests * pepperForestMultiplier);
+        + (action.payload.game.helpers.purchasedHelpers.Pepper_Forests * pepperForestMultiplier)
+        + (action.payload.game.helpers.purchasedHelpers.Pepper_Excavators * excavatorMultiplier)
+        + (action.payload.game.helpers.purchasedHelpers.Madagascar * madagascarMultiplier);
+
+      const afterPlants = action.payload.game.plants;
+
+      action.payload.game.plantGains = (afterPlants - beforePlants) * 4;
 
       // //Progress logic
       // if (action.payload.plants >= 100 && action.payload.progress < 1) {
@@ -285,6 +349,12 @@ export default function(state, action) {
       return state
     }
     case 'BUY_FOREST': {
+      return state
+    }
+    case 'BUY_EXCAVATOR': {
+      return state
+    }
+    case 'BUY_MADAGASCAR': {
       return state
     }
     case 'CHECK_HELPERS': {

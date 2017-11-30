@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 //TODO Find out how to import actions as one object
-import { clickOnce, incrementCapsaicin, checkSpecies, checkHelpers, checkEvent, hireGardner, buyGreenhouse, buyFarm, buyAquaponics, buyAeroponics, buyBiodome, buyForest, checkProgress, setLocalStorage, getLocalStorage, checkUpgradeStatus, purchaseUpgrade, resetGame } from '../actions/index';
+import { clickOnce, incrementCapsaicin, checkSpecies, checkHelpers, checkEvent, hireGardner, buyGreenhouse, buyFarm, buyAquaponics, buyAeroponics, buyBiodome, buyForest, buyExcavator, buyMadagascar, checkProgress, setLocalStorage, getLocalStorage, checkUpgradeStatus, purchaseUpgrade, resetGame } from '../actions/index';
 import { bindActionCreators } from 'redux';
 
 class MainGame extends Component {
@@ -84,6 +84,12 @@ class MainGame extends Component {
       case 'Pepper Forest':
         this.props.buyForest.buyForest(game);
         break;
+      case 'Pepper Excavator':
+        this.props.buyExcavator.buyExcavator(game);
+        break;
+      case 'Madagascar':
+        this.props.buyMadagascar.buyMadagascar(game);
+        break;
       default:
         console.log('something went wrong at purchasehelper');
     }
@@ -96,12 +102,21 @@ class MainGame extends Component {
           <h3>Purchase helpers</h3>
           {game.helpers.eligibleHelpers.map(helper => {
             helper.helper = helper.helper.split('_').join(' ');
-            return (
-              <div key={helper.helper}>
-                <p>Buy {helper.helper}</p>
-                <button className="button" type="button" onClick={() => this.purchaseHelper(game, helper.helper)}>{helper.text}</button>
-              </div>
-            )})
+            if(helper.helper === 'Madagascar' && game.helpers.purchasedHelpers.Madagascar >= 1) {
+              return (
+                <div className="grid-y" key={helper.helper}>
+                  <p>Buy {helper.helper}</p>
+                  <button className="button gold" type="button">Madagascar (purchased)</button>
+                </div>
+              )
+            } else {
+              return (
+                <div className="grid-y" key={helper.helper}>
+                  <p>Buy {helper.helper}</p>
+                  <button className="button" type="button" onClick={() => this.purchaseHelper(game, helper.helper)}>{helper.text}</button>
+                </div>
+              )
+            }})
           }
         </div>
       </div>
@@ -155,9 +170,11 @@ class MainGame extends Component {
       <div className="column medium-3">
         <div className="card">
           <h3>Your Progress</h3>
-          <p>Pepper Plants {this.props.plants.toFixed(2)}</p>
-          <p>Heat {this.props.capsaicin.toFixed(3)}</p>
-          <p>Species {this.props.species}</p>
+          <p>Pepper Plants: {this.props.plants.toFixed(2)}</p>
+          <p>Plants/s: {this.props.game.plantGains}</p>
+          <p>Heat: {this.props.capsaicin.toFixed(3)}</p>
+          <p>Heat/s: {this.props.game.heatGains}</p>
+          <p>Species: {this.props.species}</p>
           <button className='button' type="button" onClick={() => this.onClick(this.props.game)}>Click Me</button>
         </div>
       </div>
@@ -238,6 +255,8 @@ function mapDispatchToProps(dispatch) {
     buyAeroponics: bindActionCreators({buyAeroponics}, dispatch),
     buyBiodome: bindActionCreators({buyBiodome}, dispatch),
     buyForest: bindActionCreators({buyForest}, dispatch),
+    buyExcavator: bindActionCreators({buyExcavator}, dispatch),
+    buyMadagascar: bindActionCreators({buyMadagascar}, dispatch),
     checkProgress: bindActionCreators({checkProgress}, dispatch),
     checkHelpers: bindActionCreators({checkHelpers}, dispatch),
     setLocalStorage: bindActionCreators({setLocalStorage}, dispatch),
