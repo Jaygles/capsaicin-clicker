@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 //TODO Find out how to import actions as one object
 import { clickOnce, incrementCapsaicin, checkSpecies, checkHelpers, checkEvent, hireGardner, buyGreenhouse, buyFarm, buyAquaponics, buyAeroponics, buyBiodome, buyForest, buyExcavator, buyMadagascar, checkProgress, setLocalStorage, getLocalStorage, checkUpgradeStatus, purchaseUpgrade, resetGame } from '../actions/index';
 import { bindActionCreators } from 'redux';
+import Changelog from '../components/Changelog';
+import numeral from 'numeral';
 
 class MainGame extends Component {
   constructor(props) {
@@ -166,14 +168,28 @@ class MainGame extends Component {
   }
 
   renderTotals() {
+    let plants;
+    let heat;
+    if(this.props.plants > 1000000) {
+      plants = numeral(this.props.plants.toFixed(2)).format('0.00a');
+    } else {
+      plants = this.props.plants.toFixed(2);
+    }
+    if(this.props.capsaicin > 1000000) {
+      heat = numeral(this.props.capsaicin.toFixed(2)).format('0.00a');
+    } else {
+      heat = this.props.capsaicin.toFixed(2);
+    }
+    const plantGains = numeral(this.props.game.plantGains).format('0.00a');
+    const heatGains = numeral(this.props.game.heatGains).format('0.00a');
     return(
       <div className="column medium-3">
         <div className="card">
           <h3>Your Progress</h3>
-          <p>Pepper Plants: {this.props.plants.toFixed(2)}</p>
-          <p>Plants/s: {this.props.game.plantGains}</p>
-          <p>Heat: {this.props.capsaicin.toFixed(3)}</p>
-          <p>Heat/s: {this.props.game.heatGains}</p>
+          <p>Pepper Plants: {plants}</p>
+          <p>Plants/s: {plantGains}</p>
+          <p>Heat: {heat}</p>
+          <p>Heat/s: {heatGains}</p>
           <p>Species: {this.props.species}</p>
           <button className='button' type="button" onClick={() => this.onClick(this.props.game)}>Click Me</button>
         </div>
@@ -211,16 +227,14 @@ class MainGame extends Component {
         <div className="cell medium-3 medium-cell-block-y">
           {this.renderHireHelper(this.props.game)}
         </div>
-        <div className="cell medium-6 medium-cell-block-y">
+        <div className="cell medium-6 medium-cell-block-y" style={{height: 1300}}>
           {this.renderEventPanel(this.props.game)}
           {this.renderChat()}
+          <Changelog />
         </div>
         <div className="grid-y" style={{height: 70}}>
           <div className="column medium-6">
             <button className="button" type="button" onClick={() => this.props.resetGame.resetGame(this.props.game)}>Reset</button>
-          </div>
-          <div className="column medium-6">
-            <p>{this.state.timer}</p>
           </div>
         </div>
       </div>

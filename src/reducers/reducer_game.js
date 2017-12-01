@@ -249,25 +249,11 @@ export default function(state, action) {
       }
 
       // Auto helper creation logic
+      //Gardeners
       if(action.payload.game.upgrades.purchasedUpgrades.includes('hiring_manager')) {
         if(action.payload.timer % 4 === 0 && action.payload.game.plants >= 20) {
           action.payload.game.plants -= 20;
           action.payload.game.helpers.purchasedHelpers.Gardeners += 1;
-        }
-      }
-      if(action.payload.game.upgrades.purchasedUpgrades.includes('glass_factory')) {
-        if(action.payload.timer % 4 === 0 && action.payload.game.plants >= 200 && action.payload.game.helpers.purchasedHelpers.Gardeners >= 20) {
-          action.payload.game.plants -= 200;
-          if(action.payload.game.upgrades.purchasedUpgrades.includes('automated-greenhouses')) {
-            action.payload.game.helpers.purchasedHelpers.Gardeners -= 10;
-          } else {
-            action.payload.game.helpers.purchasedHelpers.Gardeners -= 20;
-          }
-          if(action.payload.game.upgrades.purchasedUpgrades.includes('assembly_line')) {
-            action.payload.game.helpers.purchasedHelpers.Greenhouses += 10;
-          } else {
-            action.payload.game.helpers.purchasedHelpers.Greenhouses += 1;
-          }
         }
       }
       if(action.payload.game.upgrades.purchasedUpgrades.includes('hiring_firm')) {
@@ -276,17 +262,42 @@ export default function(state, action) {
           action.payload.game.helpers.purchasedHelpers.Gardeners += 5;
         }
       }
-      if(action.payload.game.upgrades.purchasedUpgrades.includes('corporate_farms')) {
-        if(action.payload.timer % 4 === 0 && action.payload.game.helpers.purchasedHelpers.Greenhouses >= 10 && action.payload.game.plants >= 2000) {
-          action.payload.game.helpers.purchasedHelpers.Greenhouses -= 10;
-          action.payload.game.plants -= 2000;
-          action.payload.game.helpers.purchasedHelpers.Farms += 1;
-        }
-      }
       if(action.payload.game.upgrades.purchasedUpgrades.includes('mass_recruiting')) {
         if(action.payload.timer % 4 === 0 && action.payload.game.plants >= 1000) {
           action.payload.game.plants -= 1000;
           action.payload.game.helpers.purchasedHelpers.Gardeners += 25;
+        }
+      }
+      //Greenhouses
+      if(action.payload.game.upgrades.purchasedUpgrades.includes('glass_factory')) {
+        if(action.payload.timer % 4 === 0 && action.payload.game.plants >= 200 && action.payload.game.helpers.purchasedHelpers.Gardeners >= 8) {
+          action.payload.game.plants -= 200;
+          if(action.payload.game.upgrades.purchasedUpgrades.includes('automated-greenhouses')) {
+            action.payload.game.helpers.purchasedHelpers.Gardeners -= 4;
+          } else {
+            action.payload.game.helpers.purchasedHelpers.Gardeners -= 8;
+          }
+          if(action.payload.game.upgrades.purchasedUpgrades.includes('assembly_line')) {
+            if(action.payload.game.upgrades.purchasedUpgrades.includes('kheech_and_khong')) {
+              action.payload.game.helpers.purchasedHelpers.Greenhouses += 50;
+            } else {
+              action.payload.game.helpers.purchasedHelpers.Greenhouses += 10;
+            }
+          } else {
+            if(action.payload.game.upgrades.purchasedUpgrades.includes('kheech_and_khong')) {
+              action.payload.game.helpers.purchasedHelpers.Greenhouses += 5;
+            } else {
+              action.payload.game.helpers.purchasedHelpers.Greenhouses += 1;
+            }
+          }
+        }
+      }
+      //Farms
+      if(action.payload.game.upgrades.purchasedUpgrades.includes('corporate_farms')) {
+        if(action.payload.timer % 4 === 0 && action.payload.game.helpers.purchasedHelpers.Greenhouses >= 10 && action.payload.game.plants >= 2000) {
+          action.payload.game.helpers.purchasedHelpers.Greenhouses -= 4;
+          action.payload.game.plants -= 2000;
+          action.payload.game.helpers.purchasedHelpers.Farms += 1;
         }
       }
 
