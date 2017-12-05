@@ -136,7 +136,9 @@ export default function(state, action) {
       }
       return state;
     case 'BUTTON_CLICKED':
+
       let plantGains = 10;
+
       if(action.payload.upgrades.purchasedUpgrades.includes('click_plus_one')) {
         plantGains += 2;
       }

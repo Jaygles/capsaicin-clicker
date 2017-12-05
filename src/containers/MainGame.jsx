@@ -182,6 +182,15 @@ class MainGame extends Component {
     }
     const plantGains = numeral(this.props.game.plantGains).format('0.00a');
     const heatGains = numeral(this.props.game.heatGains).format('0.00a');
+
+    function renderAscendButton(heat) {
+      if (heat >= 1000000000000000) {
+        return (
+          <button className='button column medium-6 gold' type="button">Ascend</button>
+        )
+      }
+    }
+
     return(
       <div className="column medium-3">
         <div className="card">
@@ -192,6 +201,9 @@ class MainGame extends Component {
           <p>Heat/s: {heatGains}</p>
           <p>Species: {this.props.species}</p>
           <button className='button' type="button" onClick={() => this.onClick(this.props.game)}>Click Me</button>
+          <div className="grid-x">
+            {renderAscendButton(this.props.game.capsaicin)}
+          </div>
         </div>
       </div>
     )
@@ -201,7 +213,7 @@ class MainGame extends Component {
     return (
       <div className="column medium-6 small-12">
         <h3>Pepper Chat</h3>
-        <div className="card">
+        <div className="card" id="particles-js">
           <div className="messages grid-y align-right" style={{height: 300}}></div>
           <form>
             <input type="text" id="message-box"/>

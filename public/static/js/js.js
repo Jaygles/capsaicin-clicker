@@ -1,3 +1,10 @@
+//Particles
+
+particlesJS.load('particles-js', '/particles.json', function() {
+  console.log('callback - particles.js config loaded');
+});
+
+//Chat
 const socket = io();
 
 $('.send-button').click(function (event) {
@@ -10,12 +17,13 @@ $('.send-button').click(function (event) {
   }
 
   //TODO Nice-to-have: unique usernames
-  //TODO Add timestamps
-  //TODO Fix chat messages populating wrong way on page load
   const time = moment().tz('America/Chicago').format('h:mm:ss a');
 
-  msg = time + ' - ' + 'A ' + JSON.parse(window.localStorage.payload).species + ' - ' + msg;
-
+  if(JSON.parse(window.localStorage.payload).helpers.purchasedHelpers.Madagascar >= 1) {
+    msg = time + ' - 🇲🇬 ' + 'A ' + JSON.parse(window.localStorage.payload).species + ' - ' + msg;
+  } else {
+    msg = time + ' - ' + 'A ' + JSON.parse(window.localStorage.payload).species + ' - ' + msg;
+  }
   socket.emit('chat', msg);
 
   $('.messages').append($('<p>').text(msg));
