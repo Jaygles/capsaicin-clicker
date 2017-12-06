@@ -16,7 +16,7 @@ canvas {
     display: block;
     vertical-align: bottom;
     position: absolute;
-    z-index: 1;
+    z-index: -1;
     background-color: #F7FFF9;
 }
 
