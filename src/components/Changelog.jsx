@@ -7,6 +7,10 @@ class Changelog extends Component {
         <div className="card medium-cell-block-y" style={{height: 400}}>
           <h3>Changelog</h3>
           <br />
+          <span>Changelog Dec 5th 9:55pm</span>
+          <br />
+          <span>Added a button to toggle the chat window</span>
+          <br />
           <span>Changelog Dec 4th 8:45pm</span>
           <br />
           <span>Moved particles to just the chat window</span>
